@@ -3,7 +3,6 @@
 // Make navbar transparent wehn it is on the top
 const navbar = document.querySelector("#navbar");
 const navbarHeight = navbar.getBoundingClientRect().height;
-const navbarBtn = document.querySelectorAll(".navbar__menu__item");
 document.addEventListener("scroll", () => {
   if (window.scrollY > navbarHeight) {
     navbar.classList.add("navbar--dark");
@@ -11,29 +10,16 @@ document.addEventListener("scroll", () => {
     navbar.classList.remove("navbar--dark");
   }
 });
-navbarBtn[0].addEventListener("click", () => {
-  scrollTo(document.getElementById("home").offsetTop);
-});
-navbarBtn[1].addEventListener("click", () => {
-  scrollTo(document.getElementById("about").offsetTop);
-});
-navbarBtn[2].addEventListener("click", () => {
-  scrollTo(document.getElementById("skills").offsetTop);
-});
-navbarBtn[3].addEventListener("click", () => {
-  scrollTo(document.getElementById("work").offsetTop);
-});
-navbarBtn[4].addEventListener("click", () => {
-  scrollTo(document.getElementById("testimonials").offsetTop);
-});
-navbarBtn[5].addEventListener("click", () => {
-  scrollTo(document.getElementById("contact").offsetTop);
-});
 
-function scrollTo(x) {
-  window.scroll({
-    top: x,
-    left: 0,
-    behavior: "smooth",
-  });
-}
+// Handle scrolling when tapping on the navbar menu
+const navbarMenu = document.querySelector(".navbar__menu");
+navbarMenu.addEventListener("click", (event) => {
+  const target = event.target;
+  const link = target.dataset.link;
+  if (!link) {
+    return;
+  }
+  console.log(event.target.dataset.link);
+  const scrollTo = document.querySelector(link);
+  scrollTo.scrollIntoView({ behavior: "smooth" });
+});
