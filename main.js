@@ -23,3 +23,15 @@ navbarMenu.addEventListener("click", (event) => {
   const scrollTo = document.querySelector(link);
   scrollTo.scrollIntoView({ behavior: "smooth" });
 });
+
+const contactBtn = document.querySelector(".home__contact");
+contactBtn.addEventListener("click", (event) => {
+  const target = event.target;
+  const link = target.dataset.link;
+  if (!link) {
+    return;
+  }
+  console.log(event.target.dataset.link);
+  const scrollTo = document.querySelector(link);
+  scrollTo.scrollIntoView({ behavior: "smooth" });
+});
