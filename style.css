@@ -147,6 +147,20 @@ p {
   display: none;
 }
 
+/* Arrow btn */
+.arrow__btn {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  transition: all var(--animation-duration) ease-in-out;
+}
+
+.arrow__btn--img {
+  width: 40px;
+  height: 40px;
+  margin: 24px;
+}
+
 /* Home */
 #home {
   background: url("imgs/home-background.png") center/cover no-repeat;
