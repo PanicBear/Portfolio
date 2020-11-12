@@ -51,6 +51,41 @@ arrowUp.addEventListener("click", () => {
   scrollIntoView("#home");
 });
 
+// Project filtering & animation
+document.querySelector(
+  "#all"
+).children[0].innerText = document.querySelectorAll(
+  "[data-project-category]"
+).length;
+
+const categoryBtns = document.querySelector(".work__categories");
+const projects = document.querySelector(".work__projects");
+categoryBtns.addEventListener("mouseover", (event) => {
+  const target = event.target;
+  const filter = target.id;
+  if (filter && filter != "all") {
+    target.children[0].innerText = document.querySelectorAll(
+      `[data-project-category = "${filter}"]`
+    ).length;
+  }
+});
+
+categoryBtns.addEventListener("click", (event) => {
+  const target = event.target;
+  const filter = target.id;
+  if (filter && filter != "all") {
+    Array.from(document.querySelector(".work__projects").children).forEach(
+      (element) => {
+        if (element.dataset.projectCategory == filter) {
+          element.classList.remove("filtered");
+        } else {
+          element.classList.add("filtered");
+        }
+      }
+    );
+  }
+});
+
 function scrollIntoView(selector) {
   const scrollTo = document.querySelector(selector);
   scrollTo.scrollIntoView({ behavior: "smooth" });

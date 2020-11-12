@@ -396,6 +396,10 @@ p {
   background-color: var(--color-dark-white);
 }
 
+.filtered {
+  display: none;
+}
+
 /* Testimonial */
 #testimonials {
   background-color: var(--color-light-white);
