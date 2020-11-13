@@ -51,39 +51,27 @@ arrowUp.addEventListener("click", () => {
   scrollIntoView("#home");
 });
 
-// Project filtering & animation
-document.querySelector(
-  "#all"
-).children[0].innerText = document.querySelectorAll(
-  "[data-project-category]"
-).length;
-
-const categoryBtns = document.querySelector(".work__categories");
-const projects = document.querySelector(".work__projects");
-categoryBtns.addEventListener("mouseover", (event) => {
-  const target = event.target;
-  const filter = target.id;
-  if (filter && filter != "all") {
-    target.children[0].innerText = document.querySelectorAll(
-      `[data-project-category = "${filter}"]`
-    ).length;
+// Projects
+const workBtnContainer = document.querySelector(".work__categories");
+const projectContainer = document.querySelector(".work__projects");
+const projects = document.querySelectorAll(".project");
+workBtnContainer.addEventListener("click", (e) => {
+  const filter = e.target.dataset.filter || e.target.parentNode.dataset.filter;
+  if (!filter) {
+    return;
   }
-});
-
-categoryBtns.addEventListener("click", (event) => {
-  const target = event.target;
-  const filter = target.id;
-  if (filter && filter != "all") {
-    Array.from(document.querySelector(".work__projects").children).forEach(
-      (element) => {
-        if (element.dataset.projectCategory == filter) {
-          element.classList.remove("filtered");
-        } else {
-          element.classList.add("filtered");
-        }
+  projectContainer.classList.add("anim-out");
+  setTimeout(() => {
+    projects.forEach((project) => {
+      console.log(project.dataset.type);
+      if (filter === "*" || filter === project.dataset.type) {
+        project.classList.remove("invisible");
+      } else {
+        project.classList.add("invisible");
       }
-    );
-  }
+    });
+    projectContainer.classList.remove("anim-out");
+  }, 300);
 });
 
 function scrollIntoView(selector) {
