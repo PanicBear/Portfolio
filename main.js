@@ -11,9 +11,8 @@ document.addEventListener("scroll", () => {
   }
 });
 
-// Handle scrolling when tapping on the navbar menu & make active onclick
+// Handle scrolling when tapping on the navbar menu
 const navbarMenu = document.querySelector(".navbar__menu");
-const navbarMenuItems = document.querySelectorAll(".navbar__menu__item");
 navbarMenu.addEventListener("click", (event) => {
   const target = event.target;
   const link = target.dataset.link;
@@ -21,13 +20,6 @@ navbarMenu.addEventListener("click", (event) => {
     return;
   }
   scrollIntoView(link);
-  Array.from(navbarMenuItems).forEach((e) => {
-    if (e === target) {
-      e.classList.add("active");
-    } else {
-      e.classList.remove("active");
-    }
-  });
 });
 
 // Handle click on "contact me" button on home
@@ -60,7 +52,6 @@ arrowUp.addEventListener("click", () => {
 
 // Projects
 const workBtnContainer = document.querySelector(".work__categories");
-const categoryBtns = document.querySelectorAll(".category__btn");
 const projectContainer = document.querySelector(".work__projects");
 const projects = document.querySelectorAll(".project");
 workBtnContainer.addEventListener("click", (e) => {
@@ -68,13 +59,14 @@ workBtnContainer.addEventListener("click", (e) => {
   if (!filter) {
     return;
   }
-  Array.from(categoryBtns).forEach((categoryBtn) => {
-    if (e.target === categoryBtn) {
-      categoryBtn.classList.add("active");
-    } else {
-      categoryBtn.classList.remove("active");
-    }
-  });
+
+  // Remove selection from the previous item and select the new
+  const active = document.querySelector(".category__btn.selected")
+  active.classList.remove("selected");
+  const target =
+    e.target.nodeName === 'BUTTON' ? e.target : e.target.parentNode;
+  target.classList.add('selected');
+
   projectContainer.classList.add("anim-out");
   setTimeout(() => {
     projects.forEach((project) => {
