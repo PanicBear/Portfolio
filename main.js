@@ -4,6 +4,7 @@
 const navbar = document.querySelector("#navbar");
 const navbarHeight = navbar.getBoundingClientRect().height;
 document.addEventListener("scroll", () => {
+  console.log(window.scrollY);
   if (window.scrollY > navbarHeight) {
     navbar.classList.add("navbar--dark");
   } else {
@@ -92,6 +93,18 @@ workBtnContainer.addEventListener("click", (e) => {
     });
     projectContainer.classList.remove("anim-out");
   }, 300);
+});
+
+// Count project dynamically
+const projectCnts = document.querySelectorAll(".category__count");
+Array.from(projectCnts).forEach((projectCnt) => {
+  console.log(projectCnt.parentNode.innerText);
+  projectCnt.innerText =
+    projectCnt.parentNode.innerText === "All"
+      ? projects.length
+      : document.querySelectorAll(
+          `[data-type=${projectCnt.parentNode.innerText.toLowerCase()}]`
+        ).length;
 });
 
 function scrollIntoView(selector) {
