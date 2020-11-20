@@ -136,6 +136,11 @@ p {
   background-color: var(--color-dark-pink);
 }
 
+.navbar__menu__item.active {
+  border-color: var(--color-white);
+  border-width: 2px;
+}
+
 .navbar__toggle-btn {
   position: absolute;
   top: 24px;
