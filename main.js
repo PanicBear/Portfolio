@@ -1,31 +1,13 @@
 "use strict";
 
 // Make navbar transparent when it is on the top
-// Activate menu on scroll(additional course)
 const navbar = document.querySelector("#navbar");
 const navbarHeight = navbar.getBoundingClientRect().height;
-const sections = document.querySelectorAll(".section");
-var sectionHeights = { home: 0 };
-Array.from(sections).forEach((section) => {
-  sectionHeights[section.id] = section.offsetTop;
-});
-console.log(sectionHeights);
 document.addEventListener("scroll", () => {
   if (window.scrollY > navbarHeight) {
     navbar.classList.add("navbar--dark");
   } else {
     navbar.classList.remove("navbar--dark");
-  }
-
-  for (const index in sectionHeights) {
-    if (window.scrollY >= sectionHeights[index]) {
-      document
-        .querySelector(".active")
-        .setAttribute("class", "navbar__menu__item");
-      document
-        .querySelector("li[data-link='#" + index + "']")
-        .setAttribute("class", "navbar__menu__item active");
-    }
   }
 });
 
@@ -40,6 +22,21 @@ navbarMenu.addEventListener("click", (event) => {
   navbarMenu.classList.remove("open");
   scrollIntoView(link);
 });
+
+// Intersection Observer with Navbar menu
+const sections = document.querySelectorAll(".section");
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      document.querySelector(".active").classList.remove("active");
+      document
+        .querySelector(`[data-link="#${entry.target.id}"]`)
+        .classList.add("active");
+    } else {
+    }
+  });
+});
+sections.forEach((section) => observer.observe(section));
 
 // Navbar toggle button for small screen
 const navbarToggleBtn = document.querySelector(".navbar__toggle-btn");
