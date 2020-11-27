@@ -23,21 +23,6 @@ navbarMenu.addEventListener("click", (event) => {
   scrollIntoView(link);
 });
 
-// Intersection Observer with Navbar menu
-const sections = document.querySelectorAll(".section");
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      document.querySelector(".active").classList.remove("active");
-      document
-        .querySelector(`[data-link="#${entry.target.id}"]`)
-        .classList.add("active");
-    } else {
-    }
-  });
-});
-sections.forEach((section) => observer.observe(section));
-
 // Navbar toggle button for small screen
 const navbarToggleBtn = document.querySelector(".navbar__toggle-btn");
 navbarToggleBtn.addEventListener("click", () => {
@@ -120,7 +105,87 @@ Array.from(projectCnts).forEach((projectCnt) => {
         ).length;
 });
 
+const sectionIds = [
+  "#home",
+  "#about",
+  "#skills",
+  "#work",
+  "#testimonials",
+  "#contact",
+];
+const sections = sectionIds.map((id) => document.querySelector(id));
+const navItems = sectionIds.map((id) =>
+  document.querySelector(`.navbar__menu__item[data-link="${id}"]`)
+);
+
+let selectedNavIdx;
+let selectedNavItem = navItems[0];
+function selectNavItem(selected) {
+  selectedNavItem.classList.remove("active");
+  selectedNavItem = selected;
+  selectedNavItem.classList.add("active");
+}
+
 function scrollIntoView(selector) {
   const scrollTo = document.querySelector(selector);
-  scrollTo.scrollIntoView({ behavior: "smooth" });
+  const top =
+    scrollTo.offsetTop - navbarHeight < 0
+      ? 0
+      : scrollTo.offsetTop - navbarHeight;
+  const left = scrollTo.offsetLeft;
+  if (window.width <= 768) {
+    window.scrollTo({
+      top: top,
+      left: left,
+      behavior: "smooth",
+    });
+  } else {
+    window.scrollTo({
+      top: top + 20,
+      left: left,
+      behavior: "smooth",
+    });
+  }
+  selectNavItem(navItems[sectionIds.indexOf(selector)]);
 }
+
+const observerOptions = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.3,
+};
+
+const observerCallback = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting && entry.intersectionRatio > 0) {
+      const idx = sectionIds.indexOf(`#${entry.target.id}`);
+      // scroll up
+      if (entry.boundingClientRect.y < 0) {
+        selectedNavIdx = idx + 1;
+      } else {
+        selectedNavIdx = idx - 1;
+      }
+      selectNavItem(navItems[selectedNavIdx]);
+    }
+  });
+};
+
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+sections.forEach((section) => observer.observe(section));
+
+// scroll by user
+window.addEventListener("scroll", () => {
+  console.log(
+    window.scrollY + window.innerHeight + " " + document.body.clientHeight
+  );
+  if (window.scrollY === 0) {
+    selectedNavIdx = 0;
+  } else if (
+    // posibility of decimal
+    Math.round(window.scrollY + window.innerHeight) ===
+    document.body.clientHeight
+  ) {
+    selectedNavIdx = navItems.length - 1;
+  }
+  selectNavItem(navItems[selectedNavIdx]);
+});
